@@ -1,0 +1,55 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "audentic-website",
+  "version": "1.1.0",
+  "description": "Install and troubleshoot an existing published audentic voice agent on a React or HTML website.",
+  "author": {
+    "name": "Detextit",
+    "email": "info.detextit@gmail.com",
+    "url": "https://www.audentic.org"
+  },
+  "homepage": "https://www.audentic.org/docs/developers/coding-agents",
+  "repository": "https://github.com/detextit/audentic-agent-plugin",
+  "keywords": [
+    "audentic",
+    "voice",
+    "openai",
+    "realtime",
+    "website",
+    "react",
+    "widget",
+    "integration"
+  ],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "audentic Websites",
+        "shortDescription": "Add voice agents to websites",
+        "longDescription": "Add an existing published audentic voice agent to your website. Get React Client Component or HTML embed code, adapt it to your site's conventions, diagnose allowed-origin and microphone problems, and check the integration. In a coding environment, the skill can edit your website and run its usual checks; in chat, it provides code and setup instructions. You supply a published agent ID and allow the website's exact origin in audentic. This plugin does not create or manage agents, access your audentic account, start voice calls, or process payments.",
+        "developerName": "Detextit",
+        "category": "Developer Tools",
+        "capabilities": [
+          "Website integration",
+          "React widget setup",
+          "Embed troubleshooting"
+        ],
+        "websiteURL": "https://www.audentic.org/docs/developers/coding-agents",
+        "supportURL": "https://www.audentic.org/docs/developers/coding-agents",
+        "privacyPolicyURL": "https://www.audentic.org/privacy",
+        "termsOfServiceURL": "https://www.audentic.org/terms",
+        "defaultPrompt": [
+          "Add my published audentic voice agent to this React website.",
+          "Give me HTML embed code for my published audentic agent.",
+          "Help diagnose why my audentic widget cannot connect on my website."
+        ],
+        "brandColor": "#064E3B",
+        "composerIcon": "./assets/icon.png",
+        "logo": "./assets/icon.png"
+      },
+      "onboardingSkill": "./skills/audentic/SKILL.md",
+      "publication": {
+        "release_notes": "Updated React 0.7.0 examples, typed-input and conversation-recovery guidance, starting-language setup, mobile checks, and the OpenAI voice-agent guide. Plugin and standalone skill downloads are documented in the coding-agent guide. No account management or MCP server is included."
+      }
+    }
+  }
+}

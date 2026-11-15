@@ -1,28 +1,31 @@
 ---
 name: audentic
-description: Install or troubleshoot an existing audentic website voice agent using the React component, floating voice button, or HTML embed. Use for audentic widget integration, allowed-origin failures, and microphone or iframe setup. Agent creation and publication happen in the audentic workspace.
+description: Add an existing audentic OpenAI voice agent to a website or troubleshoot its React component, floating voice button, or HTML embed. Use for audentic integration, allowed-origin failures, typed input, and microphone or iframe setup. Agent creation and publication happen in the audentic workspace.
 ---
 
 # Install an audentic website voice agent
 
-Add an agent the owner has configured in audentic to the requested website. Use this skill when someone asks to add audentic, embed their audentic agent, or fix its website integration. For creating an agent, send the owner to the [quickstart](https://www.audentic.org/docs/quickstart) and [workspace](https://www.audentic.org/agents/new); a gallery fork is also a private draft that needs review and publication.
+Add an agent the owner has configured in audentic to the requested website. Use this skill when someone asks to add audentic, embed their audentic agent, or fix its website integration. For creating an agent, send the owner to the [OpenAI voice-agent guide](https://www.audentic.org/docs/build/openai-voice-agent) and [workspace](https://www.audentic.org/agents/new); a gallery fork is also a private draft that needs review and publication. audentic is an independent platform using OpenAI voice models, not an OpenAI product.
+
+Follow explicit user requirements over this skill's defaults for integration mode, placement, dependency versions, and deployment.
 
 ## Establish the integration
 
 - Get the agent ID from the user, project, or owner-generated **Test & publish** snippet. Never invent an ID. The ID can appear in website code; it is not an account credential.
 - Default the audentic application origin to `https://www.audentic.org`. Preserve another deployment supplied by the owner. The website origin and audentic origin are different inputs.
 - Inspect the site's framework, package manager, existing widget placement, and deployment URL. Follow its conventions and keep the change limited to the requested integration.
-- Use React for a React app. Use the hosted floating button or inline embed for a site builder or HTML website. Preserve the owner's requested placement and avoid adding a second widget where one already exists.
+- Follow the user's chosen integration mode. Otherwise, use React for a React app, or the hosted floating button or inline embed for a site builder or HTML website. Preserve the owner's requested placement and avoid adding a second widget where one already exists.
+- Do not ask for an OpenAI API key to install a managed audentic agent. Do not start a paid conversation or request microphone access automatically; the visitor chooses **Start conversation** or **Type instead**.
 - With no repository access, provide the matching snippet and owner setup steps in chat. Say which values to replace and which checks remain; do not claim files were edited or a build passed.
 
-The examples below match `@audentic/react` 0.6.1. If the project already pins another release, inspect its API and current [React guide](https://www.audentic.org/docs/developers/react) before changing that dependency.
+The examples below match `@audentic/react` 0.7.0. If the project already pins another release, inspect its API and current [React guide](https://www.audentic.org/docs/developers/react) before changing that dependency.
 
 ## React and Next.js
 
 For a new installation, use the project's package manager; the npm form is:
 
 ```bash
-npm install @audentic/react@0.6.1
+npm install @audentic/react@0.7.0
 ```
 
 The package supports React 18.2 and React 19 and includes its own styles. Render `SessionControl` with the real agent ID. In a Next.js App Router app, put it in a Client Component and import that component into the desired page or layout:
@@ -37,7 +40,7 @@ export function VoiceAssistant() {
 }
 ```
 
-The default API URL is `https://www.audentic.org/api`. For another audentic deployment, set `apiBaseUrl="https://YOUR_AUDENTIC_DOMAIN/api"`, including `/api`. Optional `widgetConfiguration` changes presentation. The owner controls the voice, instructions, business knowledge, tools, and conversation duration in audentic.
+The default API URL is `https://www.audentic.org/api`. For another audentic deployment, set `apiBaseUrl="https://YOUR_AUDENTIC_DOMAIN/api"`, including `/api`. Optional `widgetConfiguration` changes presentation. The owner controls the voice, instructions, business knowledge, tools, and conversation duration in audentic. Keep the component mounted during a conversation; give flex/grid children `min-width: 0` where needed and check the surrounding layout on mobile.
 
 ## HTML or a website builder
 
@@ -69,7 +72,11 @@ For another audentic deployment, replace the script host and inline API host tog
 
 In **Test & publish**, the owner must save and test the agent, add each website's exact origin to **Website addresses**, and select **Publish agent** for a draft or **Save & update live agent** for a published agent. `https://example.com` and `https://www.example.com` are separate origins; staging needs its own entry. Use no paths or wildcards. Local HTTP is supported for localhost with the actual port, such as `http://localhost:4000`. A draft can be integrated now, but visitors cannot connect until publication.
 
-Run the site's usual build or typecheck when repository access is available. Then test the published website while signed out of audentic: load the widget, start a real microphone conversation, hear a reply, interrupt, and end the call. Confirm that the microphone indicator turns off. A successful builder preview or build does not verify the external site's origin, audio, or iframe permissions. Report the exact origins to add and distinguish checks performed from checks left for the owner.
+The owner sets **Starting language** in **About**. Test the opening and any visitor language switches; changing the website's language or browser locale does not change the saved agent setting.
+
+Run the site's usual build or typecheck when repository access is available. Then test the published website while signed out of audentic, including a narrow mobile viewport: load the widget without a microphone prompt, choose **Type instead**, and separately start a microphone conversation, hear a reply, interrupt, and end the call. Confirm that the microphone indicator turns off. A successful builder preview, snippet check, or build does not verify the external site's origin, audio, or iframe permissions. Report the exact origins to add and distinguish checks performed from checks left for the owner.
+
+**Type instead** avoids microphone permission but still connects to the model and uses a conversation start. **Resume conversation**, when available, opens a new connection using bounded saved context; reloading or unmounting can lose that option. Do not promise offline chat, free usage, or recovery across reloads. If the owner saved a contact destination, verify that link too.
 
 ## Diagnose a failing widget
 
